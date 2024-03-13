@@ -1,5 +1,3 @@
-# fastapi_neon/main.py
-
 from fastapi import FastAPI,Path
 from enum import Enum
 
