@@ -36,7 +36,7 @@ def test_write_main():
         assert data["content"] == todo_content
 
 def test_read_list_main():
-    connection_string = str(settings.TEST_DATABASE_URL).replace(
+    connection_string = str(settings.TEST_DB_URL).replace(
         "postgresql", "postgresql+psycopg2"
     )
     engine = create_engine(connection_string, connect_args={"sslmode": "require"}, pool_recycle=600)
@@ -57,7 +57,7 @@ def test_read_list_main():
         assert response.status_code == 200
 
 def test_update_main():
-    connection_string = str(settings.TEST_DATABASE_URL).replace(
+    connection_string = str(settings.TEST_DB_URL).replace(
         "postgresql", "postgresql+psycopg"
     )
     engine = create_engine(connection_string, connect_args={"sslmode": "require"}, pool_recycle=600)
@@ -81,7 +81,7 @@ def test_update_main():
         assert data["content"] == todo_content
 
 def test_delete_main():
-    connection_string = str(settings.TEST_DATABASE_URL).replace(
+    connection_string = str(settings.TEST_DB_URL).replace(
         "postgresql", "postgresql+psycopg"
     )
     engine = create_engine(connection_string, connect_args={"sslmode": "require"}, pool_recycle=600)
