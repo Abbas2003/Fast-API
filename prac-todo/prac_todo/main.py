@@ -32,7 +32,8 @@ async def life_span(app: FastAPI):
 
 app = FastAPI(
     title="Todo App",
-    
+    lifespan=life_span,
+    version='1.0.0'
 )
 
 # app.add_middleware(
@@ -68,19 +69,19 @@ async def root():
 
 
 @app.post("/todos/",response_model=Todos)
-def add_todos(todo: Todos, session: Annotated[Session, Depends(get_session)]):
+async def add_todos(todo: Todos, session: Annotated[Session, Depends(get_session)]):
     session.add(todo)
     session.commit()
     session.refresh(todo)
     return todo
 
-@app.get("/todos",response_model=list[Todos])
-def get_todos(session: Annotated[Session, Depends(get_session)]):
+@app.get("/todos/",response_model=list[Todos])
+async def get_todos(session: Annotated[Session, Depends(get_session)]):
     todos = session.exec(select(Todos)).all()
     return todos
-
+    
 @app.delete("/todos/{todo_id}", response_model=Todos)
-def delete_todo(todo_id: int, session: Annotated[Session, Depends(get_session)]):
+async def delete_todo(todo_id: int, session: Annotated[Session, Depends(get_session)]):
     todo = session.exec(select(Todos).where(Todos.id == todo_id)).first()
     if not todo:
         raise HTTPException(status_code=404, detail="Todo not found")
@@ -93,7 +94,7 @@ class updateTodo():
     status: bool
 
 @app.put("/todos/{todo_id}", response_model=Todos)
-def update_todo(todo_id: int, todo: Todos, session: Annotated[Session, Depends(get_session)]):
+async def update_todo(todo_id: int, todo: Todos, session: Annotated[Session, Depends(get_session)]):
     todo_query = session.exec(select(Todos).where(Todos.id == todo_id)).first()
     if not todo_query:
         raise HTTPException(status_code=404, detail="Todos not found")

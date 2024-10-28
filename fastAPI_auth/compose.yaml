@@ -1,0 +1,17 @@
+name: "Mohammad Abbas"
+
+services:
+  auth_api_service: 
+    image: "auth_api_img"
+    build: 
+      context: ./auth_service
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./auth_service:/code
+    networks:
+      - auth_network
+
+networks:
+  auth_network:
